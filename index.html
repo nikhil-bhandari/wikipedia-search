@@ -1,25 +1,25 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="./app.css">
     <title>Wikipedia Search</title>
+    <link rel="stylesheet" href="app.css"/>
 </head>
 <body>
 <div class="container">
-    <h1>Wikipedia Search</h1>
+    <h1 lng="page.title">Wikipedia Search</h1>
     <form onsubmit="return wiki.onSearch()">
         <div class="form-group">
-            <label for="title">
+            <label for="title" lng="searchForm.label.title">
                 Article Title
             </label>
             <input type="text" id="title" class="form-control" required/>
         </div>
         <div class="form-group">
-            <label for="language">
+            <label for="language" lng="searchForm.label.language">
                 Language
             </label>
             <select id="language" class="form-control">
@@ -27,13 +27,13 @@
         </div>
         <hr>
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Search"/>
-            <input type="reset" class="btn btn-default" value="Reset"/>
+            <input type="submit" class="btn btn-primary" value="Search" lng="searchForm.button.search"/>
+            <input type="reset" class="btn btn-default" value="Reset" lng="searchForm.button.reset"/>
         </div>
 
     </form>
     <div class="result">
-        <h2> Table of Content:</h2>
+        <h2 lng="result.tableOfContents"> Table of Content:</h2>
         <div id="toc"></div>
     </div>
     <div class="spinner">
@@ -42,10 +42,18 @@
         <div class="bounce3"></div>
     </div>
     <div class="error">
-        <div class="error-404"></div>
-        <div class="error-5XX"></div>
+        <div class="error-404" lng="error.404"></div>
+        <div class="error-5XX" lng="error.5XX"></div>
     </div>
 </div>
+<div id="language-selector">
+    <div lng="result.languageSelector">
+        Languages:
+    </div>
+    <div id="options"></div>
+</div>
+
+<script type="text/javascript" src="i18n.js"></script>
 <script type="text/javascript" src="app.js"></script>
 </body>
 </html>

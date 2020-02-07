@@ -7,6 +7,10 @@
   const toc = document.querySelector('#toc');
   const error404 = document.querySelector('.error-404');
   const error5xx = document.querySelector('.error-5XX');
+  const html = document.querySelector('html');
+  const htmlTitleElement = document.querySelector('title');
+  const languageContainer = document.querySelector('#language-selector');
+  const languageSelector = document.querySelector('#options');
 
   const languages = [
     {
@@ -47,6 +51,8 @@
     hide(error404);
     hide(error5xx);
     hide(resultContainer);
+    hide(languageContainer);
+    languageSelector.innerHTML = "";
   };
 
   const renderList = (list, baseUrl) => {
@@ -62,6 +68,35 @@
       .join('')
   };
 
+  const updatePageTranslations = (language) => {
+    const translation = translations[language.value];
+    [
+      'page.title',
+      'searchForm.label.title',
+      'searchForm.label.language',
+      'searchForm.button.search',
+      'searchForm.button.reset',
+      'result.languageSelector',
+      'result.tableOfContents',
+      'error.404',
+      'error.5XX'
+    ].forEach((id) => {
+      document.querySelector(`[lng="${id}"]`).innerHTML = translation[id];
+      if (language.rtl) {
+        html.dir = "rtl";
+      } else {
+        html.dir = null;
+      }
+    });
+  };
+
+  const onLanguageChange = (language, langlink) => {
+    updatePageTranslations(language);
+    inputTitle.value = langlink['*'];
+    inputLanguage.value = language.value;
+    wiki.onSearch();
+  };
+
   const getLanguageInputOption = (language) => {
     const option = document.createElement("option");
     option.value = language.value;
@@ -72,9 +107,19 @@
     return option
   };
 
+  const getLanguageOption = (language, langlink) => {
+    const option = document.createElement("a");
+    option.innerHTML = language.name;
+    option.onclick = () => {
+      onLanguageChange(language, langlink);
+      return false;
+    };
+    return option;
+  };
+
 
   const searchPage = (title, language) => {
-    const url = `https://${language}.wikipedia.org/w/api.php?origin=*&action=parse&format=json&page=${title}&prop=sections`;
+    const url = `https://${language}.wikipedia.org/w/api.php?origin=*&action=parse&format=json&page=${title}&prop=sections|langlinks`;
 
     reset();
     show(spinner);
@@ -83,9 +128,20 @@
       .then(response => response.json())
       .then((data) => {
         hide(spinner);
-        if (data.parse && data.parse.sections) {
+        if (data.parse && data.parse.sections && data.parse.sections.length) {
           toc.innerHTML = renderList(data.parse.sections, `https://${language}.wikipedia.org/wiki`);
+
+          languages
+            .forEach((language) => {
+              const langlink = data.parse.langlinks.find(langlink => language.value === langlink.lang);
+
+              if (langlink) {
+                languageSelector.appendChild(getLanguageOption(language, langlink));
+              }
+            });
+
           show(resultContainer);
+          show(languageContainer);
         } else {
           show(error404);
         }
@@ -99,6 +155,8 @@
     const language = inputLanguage.value;
     const title = inputTitle.value;
 
+    htmlTitleElement.innerText = `${translations[language]['page.title']} - ${title}`;
+    updatePageTranslations(languages.find(l => l.value === language));
     searchPage(title, language);
     return false;
   };
