@@ -36,6 +36,15 @@
     }, {
       name: 'Русский',
       value: 'ru'
+    }, {
+      name: 'Ελληνικά',
+      value: 'el'
+    }, {
+      name: 'עברית',
+      value: 'he'
+    }, {
+      name: 'اردو',
+      value: 'ur'
     }
   ];
 
