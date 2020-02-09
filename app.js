@@ -161,7 +161,7 @@
     return false;
   };
 
-  scope.wiki = {onSearch};
+  scope.wiki = {onSearch, reset};
 
   languages.forEach((language) => {
     inputLanguage.appendChild(getLanguageInputOption(language));

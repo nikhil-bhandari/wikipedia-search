@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Wikipedia Search</title>
     <link rel="stylesheet" href="app.css"/>
+    <link rel="shortcut icon" href="wikipedia.ico"/>
 </head>
 <body>
 <div class="container">
@@ -28,7 +29,8 @@
         <hr>
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Search" lng="searchForm.button.search"/>
-            <input type="reset" class="btn btn-default" value="Reset" lng="searchForm.button.reset"/>
+            <input type="reset" class="btn btn-default" value="Reset" lng="searchForm.button.reset"
+                   onclick="wiki.reset()"/>
         </div>
 
     </form>
